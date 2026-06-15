@@ -22,6 +22,7 @@ export interface CatalogService {
 
 export interface Order {
   id: string;
+  short_id: string;
   user: number;
   user_email: string;
   name: string;
@@ -53,6 +54,7 @@ export interface Invoice {
   tax_amount: string;
   status: string;
   order_id: string;
+  order_short_id: string;
   service_title: string;
 }
 

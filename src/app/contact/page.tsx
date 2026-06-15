@@ -31,9 +31,9 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+      <main className="grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div className="text-center mb-16">
-          <h1 className="font-heading font-extrabold text-4xl mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          <h1 className="font-heading font-extrabold text-4xl mb-4 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
             Get in Touch
           </h1>
           <p className="max-w-md mx-auto text-slate-500 dark:text-slate-400">

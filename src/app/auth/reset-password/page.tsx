@@ -54,7 +54,7 @@ function ResetPasswordContent() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <main className="grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-md w-full space-y-8 glass-card p-8 rounded-2xl relative">
           <div className="text-center">
             <div className="flex justify-center mb-3">

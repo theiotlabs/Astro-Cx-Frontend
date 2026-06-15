@@ -3,13 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sun, Moon, Menu, X, Compass, User, LogOut } from 'lucide-react';
-import useThemeStore from '../store/useThemeStore';
+import { Menu, X, Compass, User, LogOut } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { theme, toggleTheme } = useThemeStore();
   const { isAuthenticated, logout, user } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -35,7 +33,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 text-primary dark:text-primary-light font-heading font-bold text-xl">
               <Compass className="h-6 w-6 animate-spin-slow" />
               <span>AstroMobile</span>
@@ -59,7 +57,22 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             {/* Auth Actions */}
-            {isAuthenticated ? (
+            {!mounted || !isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <Link
+                  href="/auth/login"
+                  className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/#purchase-section"
+                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg shadow-md transition-all animate-pulse-subtle"
+                >
+                  Get Report
+                </Link>
+              </div>
+            ) : (
               <div className="flex items-center space-x-4">
                 <Link
                   href="/dashboard"
@@ -75,21 +88,6 @@ export default function Navbar() {
                   <LogOut className="h-5 w-5" />
                   <span>Logout</span>
                 </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Link
-                  href="/auth/login"
-                  className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/#purchase-section"
-                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg shadow-md transition-all animate-pulse-subtle"
-                >
-                  Get Report
-                </Link>
               </div>
             )}
           </div>
@@ -124,7 +122,24 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-2 px-3 space-y-2">
-            {isAuthenticated ? (
+            {!mounted || !isAuthenticated ? (
+              <>
+                <Link
+                  href="/auth/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md font-medium text-slate-700 dark:text-slate-300"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/#purchase-section"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center w-full px-3 py-2 bg-primary text-white rounded-md font-medium shadow-md"
+                >
+                  Get Report
+                </Link>
+              </>
+            ) : (
               <>
                 <Link
                   href="/dashboard"
@@ -141,23 +156,6 @@ export default function Navbar() {
                   <LogOut className="h-5 w-5" />
                   <span>Logout</span>
                 </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/auth/login"
-                  onClick={() => setIsOpen(false)}
-                  className="block text-center w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md font-medium text-slate-700 dark:text-slate-300"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/#purchase-section"
-                  onClick={() => setIsOpen(false)}
-                  className="block text-center w-full px-3 py-2 bg-primary text-white rounded-md font-medium shadow-md"
-                >
-                  Get Report
-                </Link>
               </>
             )}
           </div>

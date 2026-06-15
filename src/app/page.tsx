@@ -144,7 +144,7 @@ export default function HomePage() {
               razorpay_signature: response.razorpay_signature
             });
             // Redirect to Success page
-            router.push(`/payment/success?order_id=${order.id}`);
+            router.push(`/payment/success?order_id=${order.id}&email=${encodeURIComponent(formData.email)}`);
           } catch (verifErr: any) {
             setError(verifErr.response?.data?.error || 'Payment verification failed.');
             setStep(2);
@@ -159,6 +159,25 @@ export default function HomePage() {
           color: '#6D28D9'
         }
       };
+
+      // In Local testing, if key is placeholder or order_id is mock, simulate payment success directly
+      if (options.key === 'rzp_test_placeholder' || order.razorpay_order_id?.startsWith('order_mock_')) {
+        console.warn("Local development/Mock mode detected. Simulating successful Razorpay payment.");
+        setStep(3); // Transition to processing state
+        try {
+          await reportService.verifyPayment({
+            razorpay_payment_id: 'pay_mock_' + Math.random().toString(36).substring(7),
+            razorpay_order_id: order.razorpay_order_id || 'order_mock_123',
+            razorpay_signature: 'sig_mock_123'
+          });
+          router.push(`/payment/success?order_id=${order.id}&email=${encodeURIComponent(formData.email)}`);
+        } catch (verifErr: any) {
+          setError(verifErr.response?.data?.error || 'Mock payment verification failed.');
+          setStep(2);
+        }
+        setIsLoading(false);
+        return;
+      }
 
       const paymentObject = new (window as any).Razorpay(options);
       paymentObject.open();
@@ -189,7 +208,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="font-heading font-extrabold text-4xl sm:text-6xl tracking-tight leading-none">
             Unlock the Hidden Power of Your{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
               Mobile Number
             </span>
           </h1>
@@ -394,7 +413,7 @@ export default function HomePage() {
 
               {/* Locked Sections Preview */}
               <div className="glass-card p-8 rounded-2xl border border-slate-200 dark:border-slate-800 relative overflow-hidden">
-                <div className="absolute inset-0 bg-slate-50/50 dark:bg-dark-bg/60 backdrop-blur-[4px] flex flex-col items-center justify-center p-6 text-center space-y-4">
+                <div className="absolute inset-0 bg-slate-50/50 dark:bg-dark-bg/60 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center space-y-4">
                   <Lock className="h-10 w-10 text-primary dark:text-primary-light animate-bounce" />
                   <h3 className="font-heading font-bold text-2xl">Unlock Your Complete Report</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm">

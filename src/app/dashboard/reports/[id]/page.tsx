@@ -229,7 +229,7 @@ export default function ReportDetailPage({ params }: PageProps) {
         <div>
           <h1 className="font-heading font-extrabold text-3xl">Report for {report.mobile_number}</h1>
           <p className="text-sm text-slate-500 pt-0.5">
-            Compiled on {new Date(report.created_at).toLocaleDateString()} &bull; Order ID: {report.order_id?.substring(0, 8)}...
+            Compiled on {new Date(report.created_at).toLocaleDateString()} &bull; Order ID: {report.order_short_id || report.order_id?.substring(0, 8).toUpperCase()}
           </p>
         </div>
 

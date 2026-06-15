@@ -14,12 +14,9 @@ import {
   Menu, 
   X,
   Compass,
-  Sun,
-  Moon,
   Loader2
 } from 'lucide-react';
 import useAuthStore from '../../store/useAuthStore';
-import useThemeStore from '../../store/useThemeStore';
 
 export default function DashboardLayout({
   children,
@@ -29,7 +26,6 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout, isAuthenticated } = useAuthStore();
-  const { theme, toggleTheme } = useThemeStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -90,7 +86,7 @@ export default function DashboardLayout({
 
         {/* User Card */}
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shadow-md">
+          <div className="h-10 w-10 rounded-full bg-linear-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shadow-md">
             {user?.name ? getInitials(user.name) : 'AM'}
           </div>
           <div className="flex-1 min-w-0">

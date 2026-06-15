@@ -85,7 +85,7 @@ export default function OrdersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
             Order History
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -133,7 +133,7 @@ export default function OrdersPage() {
                       <span>{new Date(order.date).toLocaleDateString()}</span>
                     </span>
                     <span>&bull;</span>
-                    <span className="font-mono">ID: {order.id.substring(0, 8)}...</span>
+                    <span className="font-mono">ID: {order.short_id || order.id.substring(0, 8).toUpperCase()}</span>
                   </div>
                 </div>
               </div>

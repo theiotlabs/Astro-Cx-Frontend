@@ -95,7 +95,7 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
             Activity & Notifications Center
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">

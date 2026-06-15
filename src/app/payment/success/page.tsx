@@ -101,7 +101,7 @@ function PaymentSuccessContent() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <main className="grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute top-10 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10 animate-pulse-subtle" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -z-10 animate-float" />
 
@@ -123,7 +123,7 @@ function PaymentSuccessContent() {
           <div className="p-4 bg-slate-100 dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-slate-800 text-left text-sm space-y-2">
             <div className="flex justify-between">
               <span className="text-slate-500">Order ID:</span>
-              <span className="font-mono font-medium">{orderId ? orderId.substring(0, 8) + '...' : 'N/A'}</span>
+              <span className="font-mono font-medium">{orderId ? orderId.substring(0, 8).toUpperCase() : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-500">Amount Paid:</span>
@@ -144,7 +144,7 @@ function PaymentSuccessContent() {
               </div>
               <div className="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-primary to-secondary h-full transition-all duration-500"
+                  className="bg-linear-to-r from-primary to-secondary h-full transition-all duration-500"
                   style={{ width: `${pollProgress}%` }}
                 />
               </div>
@@ -179,7 +179,7 @@ function PaymentSuccessContent() {
             /* Guest Buyer Flow */
             <div className="space-y-6 pt-4 border-t border-slate-200 dark:border-slate-800">
               <div className="flex items-start space-x-3 p-4 bg-primary/5 border border-primary/10 rounded-2xl text-left text-sm text-slate-600 dark:text-slate-300">
-                <Lock className="h-5 w-5 text-primary dark:text-primary-light flex-shrink-0 mt-0.5" />
+                <Lock className="h-5 w-5 text-primary dark:text-primary-light shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h4 className="font-semibold text-slate-900 dark:text-white">Secure Your Report Dashboard</h4>
                   <p className="text-xs leading-relaxed text-slate-500">

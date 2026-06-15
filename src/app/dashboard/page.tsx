@@ -82,7 +82,7 @@ export default function DashboardOverview() {
       
       {/* Welcome Header */}
       <div>
-        <h1 className="font-heading font-extrabold text-3xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        <h1 className="font-heading font-extrabold text-3xl md:text-4xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
           Welcome back, {user?.name || 'Astro Seeker'}
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
@@ -136,7 +136,7 @@ export default function DashboardOverview() {
 
       {/* Quick Action Shortcuts */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 bg-gradient-to-tr from-primary to-primary-hover text-white rounded-2xl flex flex-col justify-between space-y-6 shadow-lg transform hover:-translate-y-0.5 transition-all">
+        <div className="p-6 bg-linear-to-tr from-primary to-primary-hover text-white rounded-2xl flex flex-col justify-between space-y-6 shadow-lg transform hover:-translate-y-0.5 transition-all">
           <div className="space-y-2">
             <Sparkles className="h-8 w-8 text-amber-300 animate-pulse" />
             <h3 className="font-heading font-bold text-xl">Analyze Another Number</h3>

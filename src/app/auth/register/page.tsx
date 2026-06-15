@@ -57,7 +57,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <main className="grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 dark:bg-primary/10 rounded-full blur-3xl -z-10 animate-pulse-subtle" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/15 dark:bg-secondary/5 rounded-full blur-3xl -z-10 animate-float" />
         

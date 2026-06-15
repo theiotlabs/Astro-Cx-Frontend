@@ -112,7 +112,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-8 max-w-4xl">
       <div>
-        <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
           Profile Settings
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
