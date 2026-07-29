@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Astro Mobile Numerology - Frontend
 
-## Getting Started
+This is the Next.js frontend application for the **Astro Mobile Numerology Platform**, providing the user-facing eCommerce experience, report viewing, and CRM profile management.
 
-First, run the development server:
+## 1. Technologies Used
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS
+- **State Management:** Zustand
+- **API Client:** Axios (with custom token refresh interceptors)
+
+## 2. API Integration Map
+The frontend connects to the Django backend using standardized endpoints managed in `src/constants/index.ts`. All authenticated requests automatically attach a JWT token.
+
+### Endpoints
+* **Auth**: `/api/auth/register/`, `/api/auth/login/`, `/api/auth/refresh/`
+* **Profile**: `/api/me/profile/`
+* **Commerce**: 
+  * `/api/commerce/services/` (List catalog)
+  * `/api/commerce/orders/create/` (Checkout)
+  * `/api/commerce/payments/verify/` (Razorpay Success Verification)
+* **Numerology Reports**:
+  * `/api/mobile-numerology/reports/{id}/status/` (Live generation polling)
+  * `/api/mobile-numerology/reports/{id}/preview/` (HTML preview)
+  * `/api/mobile-numerology/reports/{id}/download/` (PDF download)
+
+## 3. Getting Started
+
+First, ensure your backend is running. Then, configure your environment variables:
+
+1. Copy `.env.example` to `.env.local`
+2. Ensure the `NEXT_PUBLIC_API_URL` points to your backend (e.g., `http://localhost:8000`).
+
+Run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 4. Key Features
+- **Auto Token Refresh**: The Axios interceptor (`src/services/api.ts`) automatically intercepts `401 Unauthorized` responses and attempts a silent JWT refresh in the background without logging the user out.
+- **Polling System**: When an order is paid, the frontend seamlessly polls the `/status/` API until the Celery backend finishes generating the report.

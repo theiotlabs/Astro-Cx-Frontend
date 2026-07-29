@@ -24,7 +24,7 @@ export const ENDPOINTS = {
   
   // Reports
   REPORTS: '/api/mobile-numerology/reports/',
-  REPORT_STATUS: (id: number | string) => `/api/mobile-numerology/reports/${id}/status_api/`,
+  REPORT_STATUS: (id: number | string) => `/api/mobile-numerology/reports/${id}/status/`,
   REPORT_PREVIEW: (id: number | string) => `/api/mobile-numerology/reports/${id}/preview/`,
   REPORT_DOWNLOAD: (id: number | string) => `/api/mobile-numerology/reports/${id}/download/`,
   REPORT_PDF_PREVIEW: (id: number | string) => `/api/mobile-numerology/reports/${id}/pdf-preview/`,

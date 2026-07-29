@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState, useRef, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, ArrowRight, Loader2, Lock, Compass, FileText } from 'lucide-react';
+import { CheckCircle, ArrowRight, Loader2, Lock, FileText } from 'lucide-react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { reportService } from '../../../services/reports';
@@ -11,24 +11,48 @@ import useAuthStore from '../../../store/useAuthStore';
 
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const orderId = searchParams.get('order_id');
   const { isAuthenticated, user } = useAuthStore();
 
-  const [loading, setLoading] = useState(true);
   const [report, setReport] = useState<any>(null);
   const [pollProgress, setPollProgress] = useState(0);
   const [pollMessage, setPollMessage] = useState('Initializing report calculation...');
   const [pollStatus, setPollStatus] = useState<'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'>('PENDING');
+  const [invoice, setInvoice] = useState<any>(null);
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch report and start polling if authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      setLoading(false);
       return;
     }
+
+    const startPolling = (reportId: number) => {
+      if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+
+      pollIntervalRef.current = setInterval(async () => {
+        try {
+          const statusData = await reportService.checkReportStatus(reportId);
+          setPollStatus(statusData.status);
+          setPollProgress(statusData.progress || 0);
+          setPollMessage(statusData.message || 'Processing...');
+
+          if (statusData.status === 'COMPLETED') {
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+            // Refresh report info
+            const reportsData = await reportService.listReports(user?.email);
+            if (reportsData?.[0]) {
+              setReport(reportsData[0]);
+            }
+          } else if (statusData.status === 'FAILED') {
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+          }
+        } catch (err) {
+          console.error('Error polling status:', err);
+        }
+      }, 2000);
+    };
 
     const fetchLatestReportAndPoll = async () => {
       try {
@@ -40,14 +64,21 @@ function PaymentSuccessContent() {
           setReport(latestReport);
           setPollStatus(latestReport.status);
           
+          // Also fetch invoices
+          try {
+            const invoicesData = await reportService.listInvoices();
+            const currentInvoice = invoicesData?.results?.find((inv: any) => inv.order_id === orderId || inv.order_short_id === orderId);
+            if (currentInvoice) setInvoice(currentInvoice);
+          } catch (e) {
+            console.error("Failed to fetch invoice", e);
+          }
+          
           if (latestReport.status === 'COMPLETED') {
             setPollProgress(100);
             setPollMessage('Report ready!');
-            setLoading(false);
           } else if (latestReport.status === 'FAILED') {
             setPollProgress(0);
             setPollMessage('Report generation failed. Please contact support.');
-            setLoading(false);
           } else {
             // Start polling
             startPolling(latestReport.id);
@@ -58,7 +89,6 @@ function PaymentSuccessContent() {
         }
       } catch (err) {
         console.error('Error fetching latest report:', err);
-        setLoading(false);
       }
     };
 
@@ -67,35 +97,7 @@ function PaymentSuccessContent() {
     return () => {
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
     };
-  }, [isAuthenticated, user?.email]);
-
-  const startPolling = (reportId: number) => {
-    if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
-
-    pollIntervalRef.current = setInterval(async () => {
-      try {
-        const statusData = await reportService.checkReportStatus(reportId);
-        setPollStatus(statusData.status);
-        setPollProgress(statusData.progress || 0);
-        setPollMessage(statusData.message || 'Processing...');
-
-        if (statusData.status === 'COMPLETED') {
-          if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
-          setLoading(false);
-          // Refresh report info
-          const reportsData = await reportService.listReports(user?.email);
-          if (reportsData?.[0]) {
-            setReport(reportsData[0]);
-          }
-        } else if (statusData.status === 'FAILED') {
-          if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error('Error polling status:', err);
-      }
-    }, 2000);
-  };
+  }, [isAuthenticated, user?.email, orderId]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 transition-colors duration-300">
@@ -153,13 +155,27 @@ function PaymentSuccessContent() {
               </p>
 
               {pollStatus === 'COMPLETED' && report && (
-                <Link
-                  href={`/dashboard/reports/${report.id}`}
-                  className="w-full flex items-center justify-center py-3 px-4 bg-primary hover:bg-primary-hover text-white font-medium rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5"
-                >
-                  <span>View Interactive Report</span>
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Link>
+                <div className="space-y-3">
+                  <Link
+                    href={`/dashboard/reports/${report.id}`}
+                    className="w-full flex items-center justify-center py-3 px-4 bg-primary hover:bg-primary-hover text-white font-medium rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5"
+                  >
+                    <span>View Interactive Report</span>
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Link>
+                  
+                  {invoice && invoice.pdf_url && (
+                    <a
+                      href={invoice.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center py-3 px-4 bg-white hover:bg-slate-50 text-slate-700 font-medium rounded-xl border border-slate-200 shadow-sm transition-all"
+                    >
+                      <FileText className="h-5 w-5 mr-2 text-primary" />
+                      <span>Download Invoice PDF</span>
+                    </a>
+                  )}
+                </div>
               )}
 
               {pollStatus === 'FAILED' && (
