@@ -39,7 +39,16 @@ function LoginContent() {
 
     try {
       const data = await authService.login({ email, password });
-      const { user, access, refresh } = data;
+      const { user_profile, access, refresh } = data;
+      // Map backend user_profile shape to our frontend CustomerUser shape including Name-Only CX ID
+      const user = {
+        id: user_profile.id,
+        cx_id: user_profile.cx_id || 'CX-PENDING',
+        username: user_profile.username || '',
+        name: user_profile.full_name || '',
+        email: user_profile.email,
+        phone: user_profile.phone || '',
+      };
       setAuth(user, access, refresh);
       router.push(redirectPath);
     } catch (err: any) {
@@ -67,7 +76,7 @@ function LoginContent() {
             <div className="flex justify-center mb-3">
               <Compass className="h-10 w-10 text-primary dark:text-primary-light animate-spin-slow" />
             </div>
-            <h2 className="font-heading font-bold text-3xl tracking-tight">
+            <h2 className="font-heading font-bold text-3xl tracking-tight text-slate-900 dark:text-white">
               Welcome Back
             </h2>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">

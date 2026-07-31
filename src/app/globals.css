@@ -1,77 +1,62 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #6D28D9;
-  --color-primary-hover: #5B21B6;
-  --color-primary-light: #C084FC;
-  --color-secondary: #F59E0B;
-  --color-secondary-hover: #D97706;
+  --color-primary: #0EA5E9;
+  --color-primary-hover: #0284C7;
+  --color-primary-light: #7DD3FC;
+  --color-secondary: #EC4899;
+  --color-secondary-hover: #DB2777;
   --color-success: #10B981;
   --color-danger: #EF4444;
-  --color-dark-bg: #0B0F19;
-  --color-dark-card: #151C2C;
-  --color-dark-border: #1E293B;
+  --color-dark-bg: #0B1120;
+  --color-dark-card: #1E293B;
+  --color-dark-border: #334155;
   --font-sans: var(--font-inter), sans-serif;
   --font-heading: var(--font-poppins), sans-serif;
 }
 
 :root {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
-  --card: #FFFFFF;
-  --card-foreground: #0F172A;
-  --border: #E2E8F0;
-  --primary: #6D28D9;
+  --background: #0B1120;
+  --foreground: #F8FAFC;
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
+  --border: #334155;
+  --primary: #0EA5E9; /* Sky Blue */
   --primary-foreground: #FFFFFF;
-  --secondary: #F59E0B;
+  --secondary: #EC4899; /* Vibrant Pink */
   --secondary-foreground: #FFFFFF;
 }
 
-.dark {
-  --background: #0B0F19;
-  --foreground: #F1F5F9;
-  --card: #151C2C;
-  --card-foreground: #F1F5F9;
-  --border: #1E293B;
-  --primary: #8B5CF6;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F59E0B;
-  --secondary-foreground: #000000;
-}
-
 body {
-  background-color: var(--background);
+  background: linear-gradient(135deg, #0B1120 0%, #0F172A 50%, #1E1B4B 100%);
+  background-attachment: fixed;
   color: var(--foreground);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism Styles */
+/* Glassmorphism Styles - Universal Theme-Invariant Cosmic Theme */
 .glass {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.dark .glass {
-  background: rgba(21, 28, 44, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.90) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.7) !important;
+  color: #F8FAFC !important;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  background: rgba(30, 41, 59, 0.90) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.7) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.dark .glass-card {
-  background: rgba(21, 28, 44, 0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(30, 41, 59, 0.8);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(14, 165, 233, 0.25) !important;
+  border-color: rgba(14, 165, 233, 0.4) !important;
 }
 
 /* Custom Lo Shu Grid styling */

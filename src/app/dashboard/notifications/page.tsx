@@ -107,7 +107,7 @@ export default function NotificationsPage() {
             setLoading(true);
             fetchNotifications();
           }}
-          className="inline-flex items-center space-x-1.5 py-2 px-4 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-sm font-semibold transition-all self-start"
+          className="inline-flex items-center space-x-1.5 py-2 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-sm font-semibold transition-all self-start shadow-sm text-slate-700 dark:text-slate-200 cursor-pointer"
         >
           <RefreshCw className="h-4 w-4" />
           <span>Refresh</span>

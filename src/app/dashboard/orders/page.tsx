@@ -7,10 +7,12 @@ import { reportService } from '../../../services/reports';
 
 interface OrderItem {
   id: string;
+  short_id?: string;
   service_title: string;
-  amount: string;
+  amount: string | number;
   status: 'PENDING' | 'CONFIRMED' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED';
   date: string;
+  report_ids?: number[];
 }
 
 export default function OrdersPage() {
@@ -69,11 +71,11 @@ export default function OrdersPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg" />
+        <div className="h-10 w-48 bg-slate-200 rounded-lg" />
         <div className="space-y-4">
-          <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded-2xl" />
-          <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded-2xl" />
-          <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded-2xl" />
+          <div className="h-20 bg-slate-100 rounded-2xl" />
+          <div className="h-20 bg-slate-100 rounded-2xl" />
+          <div className="h-20 bg-slate-100 rounded-2xl" />
         </div>
       </div>
     );
@@ -88,7 +90,7 @@ export default function OrdersPage() {
           <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
             Order History
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Track your report requests, consulting schedules, and digital purchases.
           </p>
         </div>
@@ -97,7 +99,7 @@ export default function OrdersPage() {
             setLoading(true);
             fetchOrders();
           }}
-          className="inline-flex items-center space-x-1.5 py-2 px-4 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-sm font-semibold transition-all self-start"
+          className="inline-flex items-center space-x-1.5 py-2 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-sm font-semibold transition-all self-start shadow-sm text-slate-700 dark:text-slate-200 cursor-pointer"
         >
           <RefreshCw className="h-4 w-4" />
           <span>Refresh</span>
@@ -116,18 +118,18 @@ export default function OrdersPage() {
           {orders.map((order) => (
             <div 
               key={order.id}
-              className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:bg-slate-100/30 dark:hover:bg-slate-900/10 transition-colors"
+              className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors"
             >
               {/* Left Side: Icon & Titles */}
-              <div className="flex items-start space-x-4">
-                <div className="p-3 bg-secondary/10 text-secondary rounded-xl mt-0.5">
+              <div className="flex items-start space-x-4 flex-1">
+                <div className="p-3 bg-secondary/10 text-secondary rounded-xl mt-0.5 shadow-sm">
                   <ShoppingBag className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-heading font-bold text-base text-slate-900 dark:text-white">
                     {order.service_title}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-slate-400">
+                  <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-slate-500">
                     <span className="flex items-center space-x-1">
                       <Calendar className="h-3.5 w-3.5" />
                       <span>{new Date(order.date).toLocaleDateString()}</span>
@@ -138,17 +140,27 @@ export default function OrdersPage() {
                 </div>
               </div>
 
-              {/* Right Side: Price & Status */}
-              <div className="flex items-center justify-between sm:justify-end sm:space-x-8 w-full sm:w-auto shrink-0 border-t border-slate-100 dark:border-slate-800 pt-4 sm:pt-0">
+              {/* Right Side: Price & Status & Actions */}
+              <div className="flex items-center justify-between sm:justify-end sm:space-x-8 w-full sm:w-auto shrink-0 border-t border-slate-100 pt-4 sm:pt-0">
                 <div className="space-y-0.5 text-left sm:text-right">
                   <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block">Total Amount</span>
-                  <span className="font-extrabold text-lg text-primary dark:text-primary-light">
-                    ₹{parseFloat(order.amount).toFixed(2)}
+                  <span className="font-extrabold text-lg text-primary">
+                    ₹{typeof order.amount === 'number' ? order.amount.toFixed(2) : parseFloat(String(order.amount || '0')).toFixed(2)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-4">
                   {getStatusBadge(order.status)}
-                  <ChevronRight className="h-5 w-5 text-slate-400 hidden sm:block" />
+                  {order.report_ids && order.report_ids.length > 0 ? (
+                    <Link
+                      href={`/dashboard/reports/${order.report_ids[0]}`}
+                      className="inline-flex items-center space-x-1 py-1.5 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-sm font-semibold transition-colors"
+                    >
+                      <span>View Report</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  ) : (
+                    <ChevronRight className="h-5 w-5 text-slate-400 hidden sm:block" />
+                  )}
                 </div>
               </div>
 
@@ -157,11 +169,11 @@ export default function OrdersPage() {
         </div>
       ) : (
         /* Empty State */
-        <div className="glass-card p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center max-w-lg mx-auto space-y-6 shadow-sm flex flex-col items-center">
+        <div className="glass-card p-12 rounded-3xl border border-slate-200 text-center max-w-lg mx-auto space-y-6 shadow-sm flex flex-col items-center">
           <ShoppingBag className="h-12 w-12 text-slate-400 animate-pulse-subtle" />
           <div className="space-y-1">
-            <h3 className="font-heading font-bold text-xl">No orders found</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <h3 className="font-heading font-bold text-xl text-slate-900">No orders found</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
               You haven&apos;t placed any orders yet. Visit our homepage to calculate a premium report!
             </p>
           </div>

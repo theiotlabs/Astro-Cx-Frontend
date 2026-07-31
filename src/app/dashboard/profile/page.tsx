@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
-import { User, Mail, Phone, Calendar, MapPin, Globe, HelpCircle, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Phone, Calendar, MapPin, Globe, HelpCircle, Save, Loader2, CheckCircle2, ShieldCheck, Copy, Check } from 'lucide-react';
 import { authService } from '../../../services/auth';
 import useAuthStore from '../../../store/useAuthStore';
 
@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const {
     register,
@@ -47,13 +48,19 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const profileData = await authService.getProfile();
+        // Map backend single-char gender codes to form values
+        const genderReverseMap: Record<string, string> = { 'M': 'male', 'F': 'female', 'O': 'other' };
+        const mappedGender = genderReverseMap[profileData.gender || ''] || profileData.gender || 'male';
         // Set form fields
         setValue('name', profileData.name || '');
         setValue('phone', profileData.phone || '');
         setValue('date_of_birth', profileData.date_of_birth || '1990-01-01');
-        setValue('gender', (profileData.gender as any) || 'male');
+        setValue('gender', mappedGender as any);
         setValue('city', profileData.city || '');
         setValue('country', profileData.country || 'India');
+        if (profileData.cx_id || profileData.username) {
+          updateUser({ cx_id: profileData.cx_id, username: profileData.username });
+        }
       } catch (err: any) {
         console.error('Failed to load profile:', err);
         setError('Could not load profile details. Please try reloading.');
@@ -120,6 +127,57 @@ export default function ProfilePage() {
         </p>
       </div>
 
+      {/* Professional Customer Portal Identity & Membership Banner */}
+      <div className="p-6 rounded-2xl bg-linear-to-r from-primary/10 via-indigo-500/10 to-secondary/10 border border-primary/25 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          <div className="h-14 w-14 rounded-2xl bg-linear-to-tr from-primary to-secondary flex items-center justify-center text-white shadow-[0_0_20px_rgba(14,165,233,0.3)] shrink-0">
+            <ShieldCheck className="h-7 w-7" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary-light">
+                Professional Name-Only CX ID
+              </span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-success/15 text-success">
+                Active ● CRM Synced
+              </span>
+            </div>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="font-mono font-extrabold text-2xl text-slate-900 dark:text-white tracking-wider">
+                {user?.cx_id || 'CX-CLIENT-8421'}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (user?.cx_id) {
+                    navigator.clipboard.writeText(user.cx_id);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }
+                }}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer"
+                title="Copy CX ID"
+              >
+                {copied ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-success" />
+                    <span className="text-success font-semibold">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5" />
+                    <span>Copy ID</span>
+                  </>
+                )}
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Portal Username: <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">{user?.username || user?.email?.split('@')[0] || 'Seeker'}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       {success && (
         <div className="p-4 bg-success/10 border border-success/20 text-success rounded-xl flex items-center space-x-3 text-sm animate-pulse-subtle">
           <CheckCircle2 className="h-5 w-5" />
@@ -169,6 +227,23 @@ export default function ProfilePage() {
               />
             </div>
             <p className="text-[10px] text-slate-400">Email addresses are unique and cannot be modified.</p>
+          </div>
+
+          {/* Unique CX ID (Read Only) */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-semibold text-slate-400">Professional Customer ID (CX ID)</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                <ShieldCheck className="h-5 w-5" />
+              </span>
+              <input
+                type="text"
+                disabled
+                value={user?.cx_id || 'CX-PENDING'}
+                className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-100 dark:bg-slate-950 text-slate-400 font-mono font-bold text-sm cursor-not-allowed"
+              />
+            </div>
+            <p className="text-[10px] text-slate-400">Name-Only identity synced across Astro CRM &amp; Customer Portal.</p>
           </div>
 
           {/* Phone Number */}

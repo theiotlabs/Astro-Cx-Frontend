@@ -117,7 +117,7 @@ export default function InvoicesPage() {
       {invoices.length > 0 ? (
         <div className="glass-card rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
           {/* Table Header for large screens */}
-          <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-slate-100 dark:bg-dark-card border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 uppercase tracking-wider">
+          <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             <span>Invoice Number</span>
             <span>Date Issued</span>
             <span>Service</span>

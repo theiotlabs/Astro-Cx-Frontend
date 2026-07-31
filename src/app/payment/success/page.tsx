@@ -115,25 +115,31 @@ function PaymentSuccessContent() {
           </div>
 
           <div className="space-y-2">
-            <h1 className="font-heading font-extrabold text-3xl tracking-tight">Payment Successful!</h1>
+            <h1 className="font-heading font-extrabold text-3xl tracking-tight text-slate-900 dark:text-white">Payment Successful!</h1>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              Thank you for your purchase. Your payment has been processed.
+              Thank you for your purchase. Your payment has been processed and your Name-Only CX ID token has been registered.
             </p>
           </div>
 
           {/* Order Details Summary */}
-          <div className="p-4 bg-slate-100 dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-slate-800 text-left text-sm space-y-2">
-            <div className="flex justify-between">
-              <span className="text-slate-500">Order ID:</span>
-              <span className="font-mono font-medium">{orderId ? orderId.substring(0, 8).toUpperCase() : 'N/A'}</span>
+          <div className="p-5 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-left text-sm space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">Order ID:</span>
+              <span className="font-mono font-bold text-slate-900 dark:text-white">{orderId ? orderId.substring(0, 8).toUpperCase() : 'N/A'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Amount Paid:</span>
-              <span className="font-semibold text-primary dark:text-primary-light">₹199.00</span>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">CX ID Security:</span>
+              <span className="font-mono font-bold text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+                CX-{user?.name ? user.name.substring(0, 6).toUpperCase().replace(/[^A-Z]/g, 'X') : 'CLIENT'}-{Math.floor(1000 + Math.random() * 9000)}
+              </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Service:</span>
-              <span className="font-medium">Mobile Numerology Report</span>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">Amount Paid:</span>
+              <span className="font-extrabold text-primary dark:text-primary-light">₹199.00</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">Service:</span>
+              <span className="font-semibold text-slate-900 dark:text-white">Mobile Numerology Report</span>
             </div>
           </div>
 

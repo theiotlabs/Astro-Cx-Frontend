@@ -80,6 +80,10 @@ api.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         useAuthStore.getState().logout();
+        // Redirect to login when session expires
+        if (typeof window !== 'undefined') {
+          window.location.href = `/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`;
+        }
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

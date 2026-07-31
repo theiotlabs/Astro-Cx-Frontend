@@ -42,7 +42,7 @@ export default function DashboardLayout({
 
   if (!mounted || !isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-dark-bg">
+      <div className="min-h-screen flex items-center justify-center bg-transparent text-foreground">
         <LoaderSpinner />
       </div>
     );
@@ -73,25 +73,28 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-dark-bg text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-foreground flex flex-col md:flex-row transition-colors duration-300 relative">
       
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 glass border-r border-slate-200 dark:border-slate-800 shrink-0 sticky top-0 h-screen">
         <div className="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800">
           <Link href="/" className="flex items-center space-x-2 text-primary dark:text-primary-light font-heading font-bold text-lg">
-            <Compass className="h-6 w-6 text-primary" />
+            <Compass className="h-6 w-6 text-primary dark:text-primary-light" />
             <span>AstroMobile</span>
           </Link>
         </div>
 
         {/* User Card */}
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-full bg-linear-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shadow-md">
+          <div className="h-10 w-10 rounded-full bg-linear-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(14,165,233,0.3)] shrink-0">
             {user?.name ? getInitials(user.name) : 'AM'}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold truncate text-slate-900 dark:text-white">{user?.name || 'Astro User'}</p>
-            <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
+            <span className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 tracking-wider">
+              {user?.cx_id || 'CX-CLIENT-8421'}
+            </span>
           </div>
         </div>
 
@@ -107,10 +110,10 @@ export default function DashboardLayout({
                 className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive 
                     ? 'bg-primary text-white shadow-md shadow-primary/20' 
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
+                    : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-5 w-5 shrink-0" />
                 <span>{item.name}</span>
               </Link>
             );
@@ -119,12 +122,11 @@ export default function DashboardLayout({
 
         {/* Logout */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
-
           <button
             onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-danger hover:bg-danger/10 transition-colors"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-danger hover:bg-danger/10 transition-colors cursor-pointer"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5 shrink-0" />
             <span>Logout</span>
           </button>
         </div>
@@ -148,10 +150,10 @@ export default function DashboardLayout({
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-30 flex">
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
-          <div className="relative flex flex-col w-64 max-w-xs bg-slate-50 dark:bg-color-dark-bg border-r border-slate-200 dark:border-slate-800 h-full p-4 space-y-4">
+          <div className="relative flex flex-col w-64 max-w-xs bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-full p-4 space-y-4">
             <div className="flex items-center justify-between">
               <span className="font-heading font-bold text-primary dark:text-primary-light">Navigation</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800">
+              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -168,17 +170,17 @@ export default function DashboardLayout({
                     className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                       isActive 
                         ? 'bg-primary text-white shadow-md' 
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5 shrink-0" />
                     <span>{item.name}</span>
                   </Link>
                 );
               })}
             </nav>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
+            <div className="border-t border-slate-200 pt-4 space-y-2">
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-danger hover:bg-danger/10"
@@ -204,7 +206,7 @@ function LoaderSpinner() {
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <Loader2 className="h-12 w-12 text-primary animate-spin" />
-      <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Securing session...</p>
+      <p className="text-sm text-slate-500 font-medium">Securing session...</p>
     </div>
   );
 }

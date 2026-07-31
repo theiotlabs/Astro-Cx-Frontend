@@ -6,21 +6,15 @@ import {
   ArrowLeft, 
   Grid, 
   Sparkles, 
-  Compass, 
-  TrendingUp, 
-  FileText, 
   Download, 
   ShieldCheck,
   AlertCircle,
-  HelpCircle,
   Activity,
   Heart,
   CheckCircle,
-  Printer,
   Loader2
 } from 'lucide-react';
 import { reportService } from '../../../../services/reports';
-import useAuthStore from '../../../../store/useAuthStore';
 import useThemeStore from '../../../../store/useThemeStore';
 import api from '../../../../services/api';
 import { API_BASE_URL } from '../../../../constants';
@@ -30,15 +24,15 @@ interface PageProps {
 }
 
 const loShuLayout = [
-  { digit: 4, name: 'Wood / Wealth', element: 'wood', color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' },
-  { digit: 9, name: 'Fire / Fame', element: 'fire', color: 'bg-rose-500/10 border-rose-500/30 text-rose-500' },
-  { digit: 2, name: 'Earth / Relationship', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400' },
-  { digit: 3, name: 'Wood / Family', element: 'wood', color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' },
-  { digit: 5, name: 'Earth / Health', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400' },
-  { digit: 7, name: 'Metal / Children', element: 'metal', color: 'bg-purple-500/10 border-purple-500/30 text-purple-500' },
-  { digit: 8, name: 'Earth / Knowledge', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400' },
-  { digit: 1, name: 'Water / Career', element: 'water', color: 'bg-sky-500/10 border-sky-500/30 text-sky-500' },
-  { digit: 6, name: 'Metal / Helpers', element: 'metal', color: 'bg-purple-500/10 border-purple-500/30 text-purple-500' }
+  { digit: 4, name: 'Wood / Wealth', element: 'wood', color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600' },
+  { digit: 9, name: 'Fire / Fame', element: 'fire', color: 'bg-rose-500/10 border-rose-500/30 text-rose-600' },
+  { digit: 2, name: 'Earth / Relationship', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600' },
+  { digit: 3, name: 'Wood / Family', element: 'wood', color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600' },
+  { digit: 5, name: 'Earth / Health', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600' },
+  { digit: 7, name: 'Metal / Children', element: 'metal', color: 'bg-purple-500/10 border-purple-500/30 text-purple-600' },
+  { digit: 8, name: 'Earth / Knowledge', element: 'earth', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600' },
+  { digit: 1, name: 'Water / Career', element: 'water', color: 'bg-sky-500/10 border-sky-500/30 text-sky-600' },
+  { digit: 6, name: 'Metal / Helpers', element: 'metal', color: 'bg-purple-500/10 border-purple-500/30 text-purple-600' }
 ];
 
 const planesList = [
@@ -203,7 +197,7 @@ export default function ReportDetailPage({ params }: PageProps) {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Link
           href="/dashboard/reports"
-          className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           <span>Back to Reports</span>
@@ -225,22 +219,22 @@ export default function ReportDetailPage({ params }: PageProps) {
       </div>
 
       {/* Main Title & Tabs Toggle */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-slate-200 pb-4 gap-4">
         <div>
-          <h1 className="font-heading font-extrabold text-3xl">Report for {report.mobile_number}</h1>
+          <h1 className="font-heading font-extrabold text-3xl text-slate-900">Report for {report.mobile_number}</h1>
           <p className="text-sm text-slate-500 pt-0.5">
             Compiled on {new Date(report.created_at).toLocaleDateString()} &bull; Order ID: {report.order_short_id || report.order_id?.substring(0, 8).toUpperCase()}
           </p>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex bg-slate-200/60 dark:bg-slate-950/60 p-1 rounded-xl border border-slate-300/30 dark:border-slate-800 self-start">
+        <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-200 self-start">
           <button
             onClick={() => setActiveTab('interactive')}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               activeTab === 'interactive' 
-                ? 'bg-white dark:bg-slate-900 text-primary dark:text-primary-light shadow' 
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                ? 'bg-white text-primary shadow' 
+                : 'text-slate-500 hover:text-slate-700'
             }`}
           >
             Interactive Dashboard
@@ -249,8 +243,8 @@ export default function ReportDetailPage({ params }: PageProps) {
             onClick={() => setActiveTab('pdf')}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               activeTab === 'pdf' 
-                ? 'bg-white dark:bg-slate-900 text-primary dark:text-primary-light shadow' 
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                ? 'bg-white text-primary shadow' 
+                : 'text-slate-500 hover:text-slate-700'
             }`}
           >
             Generated PDF Report
@@ -266,8 +260,8 @@ export default function ReportDetailPage({ params }: PageProps) {
           <div className="lg:col-span-2 space-y-8">
             
             {/* Executive Summary Widget */}
-            <div className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
-              <h3 className="font-heading font-bold text-lg flex items-center space-x-2">
+            <div className="glass-card p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
+              <h3 className="font-heading font-bold text-lg flex items-center space-x-2 text-slate-900">
                 <Sparkles className="h-5 w-5 text-primary animate-pulse-subtle" />
                 <span>Executive Summary</span>
               </h3>
@@ -292,28 +286,28 @@ export default function ReportDetailPage({ params }: PageProps) {
               </div>
 
               {/* Score breakdown */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-slate-800 rounded-2xl gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-slate-50 border border-slate-200 rounded-2xl gap-4">
                 <div className="space-y-1">
                   <span className="text-xs text-slate-500 font-semibold uppercase">Compatibility Verdict</span>
-                  <h4 className="font-heading font-extrabold text-lg text-slate-900 dark:text-white">
+                  <h4 className="font-heading font-extrabold text-lg text-slate-900">
                     Harmonious Alignment
                   </h4>
                 </div>
                 <div className="text-left sm:text-right">
                   <span className="text-xs text-slate-500 font-semibold uppercase block">Ecosystem Score</span>
-                  <span className="text-3xl font-black text-primary dark:text-primary-light">85 / 100</span>
+                  <span className="text-3xl font-black text-primary">85 / 100</span>
                 </div>
               </div>
             </div>
 
             {/* Client-Side Lo Shu Grid */}
-            <div className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
+            <div className="glass-card p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
               <div className="flex items-center justify-between">
-                <h3 className="font-heading font-bold text-lg flex items-center space-x-2">
+                <h3 className="font-heading font-bold text-lg flex items-center space-x-2 text-slate-900">
                   <Grid className="h-5 w-5 text-secondary" />
                   <span>3x3 Lo Shu Magic Grid</span>
                 </h3>
-                <span className="text-xs text-slate-500 dark:text-slate-400">Shows present digits & repetition count</span>
+                <span className="text-xs text-slate-500">Shows present digits & repetition count</span>
               </div>
 
               <div className="grid grid-cols-3 gap-4 max-w-md mx-auto aspect-square w-full">
@@ -324,8 +318,8 @@ export default function ReportDetailPage({ params }: PageProps) {
                       key={cell.digit}
                       className={`loshu-cell border ${
                         present 
-                          ? cell.color + ' shadow-md scale-102 font-black border-2' 
-                          : 'bg-slate-100/50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-900 border-dashed text-slate-400/50 dark:text-slate-800'
+                          ? cell.color + ' shadow-sm scale-102 font-black border-2 bg-white' 
+                          : 'bg-slate-50 border-slate-200 border-dashed text-slate-400'
                       }`}
                     >
                       <div className="flex flex-col items-center justify-center">
@@ -339,8 +333,8 @@ export default function ReportDetailPage({ params }: PageProps) {
             </div>
 
             {/* Planes Completion Analysis */}
-            <div className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
-              <h3 className="font-heading font-bold text-lg flex items-center space-x-2">
+            <div className="glass-card p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
+              <h3 className="font-heading font-bold text-lg flex items-center space-x-2 text-slate-900">
                 <Activity className="h-5 w-5 text-success animate-pulse-subtle" />
                 <span>Cosmic Planes & Arrows Completion</span>
               </h3>
@@ -351,11 +345,11 @@ export default function ReportDetailPage({ params }: PageProps) {
                   const pct = Math.round((score / 3) * 100);
                   const status = getPlaneStatus(score);
                   return (
-                    <div key={plane.name} className="p-4 bg-slate-100/80 dark:bg-dark-card border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
+                    <div key={plane.name} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
                       <div className="flex justify-between items-start">
                         <div className="space-y-0.5">
-                          <h4 className="font-semibold text-sm">{plane.name}</h4>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{plane.desc}</p>
+                          <h4 className="font-semibold text-sm text-slate-800">{plane.name}</h4>
+                          <p className="text-xs text-slate-500 leading-normal">{plane.desc}</p>
                         </div>
                         <span className={`text-[10px] px-2 py-0.5 rounded font-semibold uppercase tracking-wider ${status.color}`}>
                           {status.label}
@@ -367,7 +361,7 @@ export default function ReportDetailPage({ params }: PageProps) {
                           <span>Progress</span>
                           <span>{pct}%</span>
                         </div>
-                        <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                           <div 
                             className={`h-full transition-all ${
                               score === 3 ? 'bg-success' : score === 2 ? 'bg-primary' : score === 1 ? 'bg-amber-500' : 'bg-danger'
@@ -388,8 +382,8 @@ export default function ReportDetailPage({ params }: PageProps) {
           <div className="space-y-8">
             
             {/* Compatibility Matrix */}
-            <div className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
-              <h3 className="font-heading font-bold text-lg flex items-center space-x-2">
+            <div className="glass-card p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
+              <h3 className="font-heading font-bold text-lg flex items-center space-x-2 text-slate-900">
                 <Heart className="h-5 w-5 text-danger animate-pulse-subtle" />
                 <span>Compatibility Guide</span>
               </h3>
@@ -410,7 +404,7 @@ export default function ReportDetailPage({ params }: PageProps) {
                   <span className="block text-xs text-slate-500 font-semibold uppercase mb-1">Transformative / Neutral</span>
                   <div className="flex flex-wrap gap-1.5">
                     {compat.neutral.map(n => (
-                      <span key={n} className="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300/40 dark:border-slate-700 rounded-lg font-bold">
+                      <span key={n} className="px-2.5 py-1 bg-slate-100 text-slate-600 border border-slate-200 rounded-lg font-bold">
                         {n}
                       </span>
                     ))}
@@ -428,18 +422,18 @@ export default function ReportDetailPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-2">
+                <div className="border-t border-slate-200 pt-4 space-y-2">
                   <div>
                     <span className="text-xs text-slate-500 font-semibold uppercase">Lucky Days:</span>
-                    <p className="font-medium">{luckyDays.join(', ')}</p>
+                    <p className="font-medium text-slate-800">{luckyDays.join(', ')}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Remedies & Mobile Detox */}
-            <div className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
-              <h3 className="font-heading font-bold text-lg flex items-center space-x-2">
+            <div className="glass-card p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
+              <h3 className="font-heading font-bold text-lg flex items-center space-x-2 text-slate-900">
                 <ShieldCheck className="h-5 w-5 text-success" />
                 <span>Ecosystem Remedies</span>
               </h3>
@@ -447,9 +441,9 @@ export default function ReportDetailPage({ params }: PageProps) {
               <div className="space-y-4">
                 {missingNumbers.length > 0 ? (
                   missingNumbers.map(n => (
-                    <div key={n} className="space-y-1 text-sm border-b border-slate-100 dark:border-slate-800/80 pb-3 last:border-b-0 last:pb-0">
+                    <div key={n} className="space-y-1 text-sm border-b border-slate-200 pb-3 last:border-b-0 last:pb-0">
                       <span className="font-bold text-xs text-amber-500 uppercase">Missing Number {n} Remedy:</span>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">
+                      <p className="text-xs text-slate-600 leading-normal">
                         {missingNumberRemedies[n] || 'Respect elders and maintain healthy routines.'}
                       </p>
                     </div>
@@ -468,9 +462,9 @@ export default function ReportDetailPage({ params }: PageProps) {
         </div>
       ) : (
         /* PDF Preview Tab */
-        <div className="glass-card rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm h-[75vh] flex flex-col relative">
-          <div className="p-4 bg-slate-100 dark:bg-dark-card border-b border-slate-200 dark:border-slate-800 flex justify-between items-center z-10">
-            <span className="text-sm font-semibold">Embedded Premium HTML Report Preview</span>
+        <div className="glass-card rounded-2xl border border-slate-200 overflow-hidden shadow-sm h-[75vh] flex flex-col relative">
+          <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center z-10">
+            <span className="text-sm font-semibold text-slate-900">Embedded Premium HTML Report Preview</span>
             <button
               onClick={handleDownload}
               disabled={downloading}
@@ -487,7 +481,7 @@ export default function ReportDetailPage({ params }: PageProps) {
 
           <iframe
             src={`${API_BASE_URL}/api/mobile-numerology/reports/${report.id}/preview/?theme=${theme}`}
-            className="flex-1 w-full border-none bg-white dark:bg-dark-bg"
+            className="flex-1 w-full border-none bg-black"
             title="Premium Report Preview"
           />
         </div>

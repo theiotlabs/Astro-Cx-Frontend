@@ -2,6 +2,8 @@ import { create } from 'zustand';
 
 export interface CustomerUser {
   id: number;
+  cx_id?: string;
+  username?: string;
   name: string;
   email: string;
   phone: string;
@@ -52,7 +54,8 @@ const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem('astro_refresh_token', refreshToken);
       localStorage.setItem('astro_user', JSON.stringify(user));
       // Save access token to cookie for Next.js middleware access
-      document.cookie = `astro_access_token=${accessToken}; path=/; max-age=86400; SameSite=Lax;`;
+      // max-age aligned with refresh token lifetime (30 days)
+      document.cookie = `astro_access_token=${accessToken}; path=/; max-age=2592000; SameSite=Lax;`;
     }
     set({ user, accessToken, refreshToken, isAuthenticated: true });
   },

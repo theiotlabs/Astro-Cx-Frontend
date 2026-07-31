@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
             <div className="flex justify-center mb-3">
               <Compass className="h-10 w-10 text-primary dark:text-primary-light animate-spin-slow" />
             </div>
-            <h2 className="font-heading font-bold text-3xl tracking-tight">
+            <h2 className="font-heading font-bold text-3xl tracking-tight text-slate-900 dark:text-white">
               Forgot Password
             </h2>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">

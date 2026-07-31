@@ -48,6 +48,7 @@ export const reportService = {
     price: number;
     currency?: string;
     notes?: string;
+    metadata?: Record<string, any>;
   }) {
     const response = await api.post(ENDPOINTS.CREATE_ORDER, payload);
     return response.data;

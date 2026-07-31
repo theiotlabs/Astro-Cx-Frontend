@@ -34,7 +34,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="shrink-0 flex items-center">
-            <Link href="/" className="flex items-center space-x-2 text-primary dark:text-primary-light font-heading font-bold text-xl">
+            <Link href="/" className="flex items-center space-x-2 text-primary font-heading font-bold text-xl">
               <Compass className="h-6 w-6 animate-spin-slow" />
               <span>AstroMobile</span>
             </Link>
@@ -47,7 +47,7 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 className={`font-medium transition-colors hover:text-primary dark:hover:text-primary-light ${
-                  pathname === link.href ? 'text-primary dark:text-primary-light' : 'text-slate-600 dark:text-slate-300'
+                  pathname === link.href ? 'text-primary dark:text-primary-light' : 'text-slate-700 dark:text-slate-200'
                 }`}
               >
                 {link.name}
@@ -61,7 +61,7 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   href="/auth/login"
-                  className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary"
+                  className="text-slate-700 dark:text-slate-200 font-medium hover:text-primary dark:hover:text-primary-light transition-colors"
                 >
                   Login
                 </Link>
@@ -73,17 +73,20 @@ export default function Navbar() {
                 </Link>
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
+                <span className="hidden lg:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                  {user?.cx_id || 'CX-CLIENT-8421'}
+                </span>
                 <Link
                   href="/dashboard"
-                  className="flex items-center space-x-1 font-medium text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary-light"
+                  className="flex items-center space-x-1 font-medium text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-primary-light"
                 >
                   <User className="h-5 w-5" />
                   <span>Dashboard</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-1 font-medium text-danger hover:underline"
+                  className="flex items-center space-x-1 font-medium text-danger hover:underline cursor-pointer"
                 >
                   <LogOut className="h-5 w-5" />
                   <span>Logout</span>

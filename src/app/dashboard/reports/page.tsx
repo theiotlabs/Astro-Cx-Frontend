@@ -97,10 +97,10 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg" />
+        <div className="h-10 w-48 bg-slate-200 rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="h-48 bg-slate-200 dark:bg-slate-800 rounded-2xl" />
-          <div className="h-48 bg-slate-200 dark:bg-slate-800 rounded-2xl" />
+          <div className="h-48 bg-slate-100 rounded-2xl" />
+          <div className="h-48 bg-slate-100 rounded-2xl" />
         </div>
       </div>
     );
@@ -115,7 +115,7 @@ export default function ReportsPage() {
           <h1 className="font-heading font-extrabold text-3xl text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
             My Numerology Reports
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
             Access your 5-layer mobile numerology reports, download PDF files, or track active calculation statuses.
           </p>
         </div>
@@ -140,7 +140,7 @@ export default function ReportsPage() {
           {reports.map((report) => (
             <div 
               key={report.id} 
-              className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden group"
+              className="glass-card p-6 rounded-2xl border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-[0_0_20px_rgba(14,165,233,0.15)] hover:border-primary/30 transition-all relative overflow-hidden group"
             >
               {/* Top Row: Mobile Number & Status */}
               <div className="flex justify-between items-start">
@@ -151,7 +151,7 @@ export default function ReportsPage() {
                   <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
                     {report.mobile_number}
                   </h3>
-                  <div className="flex items-center text-xs text-slate-400 space-x-1.5 pt-0.5">
+                  <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 space-x-1.5 pt-0.5">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>Ordered {new Date(report.created_at).toLocaleDateString()}</span>
                   </div>
@@ -163,22 +163,22 @@ export default function ReportsPage() {
 
               {/* Middle Row: Key Calculation Metrics (Mulank, Bhagyank, Total) */}
               {report.status === 'COMPLETED' ? (
-                <div className="grid grid-cols-3 gap-3 bg-slate-100/50 dark:bg-dark-card p-3 rounded-xl border border-slate-200/50 dark:border-slate-800/50 text-center">
+                <div className="grid grid-cols-3 gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
                   <div>
-                    <span className="block text-[10px] text-slate-500 font-semibold uppercase">Mulank</span>
+                    <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase">Mulank</span>
                     <span className="text-lg font-bold text-primary dark:text-primary-light">{report.mulank || '—'}</span>
                   </div>
                   <div>
-                    <span className="block text-[10px] text-slate-500 font-semibold uppercase">Bhagyank</span>
+                    <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase">Bhagyank</span>
                     <span className="text-lg font-bold text-secondary">{report.bhagyank || '—'}</span>
                   </div>
                   <div>
-                    <span className="block text-[10px] text-slate-500 font-semibold uppercase">Mobile Total</span>
+                    <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase">Mobile Total</span>
                     <span className="text-lg font-bold text-success">{report.mobile_total || '—'}</span>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 flex items-center space-x-2 text-xs text-slate-500">
+                <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
                   <AlertCircle className="h-4 w-4 text-primary" />
                   <span>
                     {report.status === 'FAILED' 
@@ -189,12 +189,12 @@ export default function ReportsPage() {
               )}
 
               {/* Bottom Row: Actions */}
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
                 {report.status === 'COMPLETED' ? (
                   <>
                     <Link
                       href={`/dashboard/reports/${report.id}`}
-                      className="inline-flex items-center text-sm font-semibold text-primary dark:text-primary-light hover:underline"
+                      className="inline-flex items-center text-sm font-semibold text-primary dark:text-primary-light hover:text-primary-hover hover:underline"
                     >
                       <span>Open Report</span>
                       <ExternalLink className="h-4 w-4 ml-1" />
@@ -202,7 +202,7 @@ export default function ReportsPage() {
                     <button
                       onClick={() => handleDownload(report.id, report.mobile_number)}
                       disabled={downloadingId === report.id}
-                      className="p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+                      className="p-2 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer"
                       title="Download PDF Report"
                     >
                       {downloadingId === report.id ? (
@@ -215,7 +215,7 @@ export default function ReportsPage() {
                 ) : (
                   <button
                     disabled
-                    className="w-full py-2 bg-slate-200 dark:bg-slate-800 text-slate-400 text-xs font-semibold rounded-lg cursor-not-allowed uppercase"
+                    className="w-full py-2 bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-lg cursor-not-allowed uppercase border border-slate-200 dark:border-slate-800"
                   >
                     Processing In Background
                   </button>
@@ -230,8 +230,8 @@ export default function ReportsPage() {
         <div className="glass-card p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center max-w-lg mx-auto space-y-6 shadow-sm flex flex-col items-center">
           <Layers className="h-12 w-12 text-slate-400 animate-pulse-subtle" />
           <div className="space-y-1">
-            <h3 className="font-heading font-bold text-xl">No reports generated yet</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">No reports generated yet</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               We haven&apos;t calculated any mobile numerology reports under this account yet. Enter a mobile number on our home screen to check predictions.
             </p>
           </div>

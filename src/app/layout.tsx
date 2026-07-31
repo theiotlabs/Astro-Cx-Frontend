@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-slate-50 dark:bg-color-dark-bg text-slate-900 dark:text-slate-100 min-h-screen`}
+        className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-[#05050A] text-slate-100 min-h-screen`}
       >
         <Providers>
           {children}

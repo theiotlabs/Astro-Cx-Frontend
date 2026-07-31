@@ -1,5 +1,6 @@
 export interface UserProfile {
   id: number;
+  cx_id?: string;
   name: string;
   email: string;
   phone: string;
